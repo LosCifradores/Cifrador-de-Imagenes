@@ -1,0 +1,5 @@
+# Image processing
+Pillow>=11.2.1
+
+# Cryptography
+pycryptodome>=3.23.0
