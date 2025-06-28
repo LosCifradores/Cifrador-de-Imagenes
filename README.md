@@ -47,22 +47,28 @@ El trabajo será acompañado por una **exposición oral** y opcionalmente por un
 
 ---
 
-### 📁 Estructura del Proyecto (TENTATIVO)
+### 📁 Estructura del Proyecto
 ```
-Cifrador-de-Imagenes/
-├── src/ # Código fuente
-│ ├── encryptor.py
-│ └── utils.py # Funciones auxiliares
-├── assets/
-│ ├── original.png
-│ ├── encrypted.bin
-│ ├── decrypted.png
-│ └── tampered.bin # Versión modificada por un atacante
-├── demo/
-│ └── demo.mp4
-│ └── presentation.pptx
-├── README.md
-└── informe_final.pdf
+├── Cifrador-de-Imagenes-Salsa20
+│ ├── Cifrador-de-Imagenes
+│ │ ├── __init__.py
+│ │ ├── attack.py
+│ │ ├── main.py
+│ │ ├── salsa20.py
+│ │ ├── utils.py
+│ │ ├── imagenes
+│ │ │ ├── imagen_original.png
+│ │ │ ├── imagen_cifrada.png
+│ │ │ ├── imagen_descifrada.png
+│ │ │ └── imagen_alterada.png
+│ ├── CONTRIBUTING.md
+│ ├── demo
+│ │ └── demo_salsa20.pptx
+│ ├── README.md
+│ ├── requirements.txt
+│ ├── TASKS.md
+│ └── venv
+
 ```
 
 ---
@@ -82,8 +88,32 @@ Cifrador-de-Imagenes/
 ## 🎯 Ejecución del Proyecto
 
 ### Requisitos
+- Python 3.x instalado.
+- Virtual environment (opcional pero recomendado).
+- Dependencias detalladas en `requirements.txt` instaladas
+
+### 🚀 Instalación
+
+1. **Clonar el repositorio**
+   ```bash
+   git clone https://github.com/LosCifradores/Cifrador-de-Imagenes.git
+   cd Cifrador-de-Imagenes
+   ```
+
+2. **Crear y activar un entorno virtual**
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate   # Linux/macOS
+   .venv\Scripts\activate      # Windows
+   ```
+3. **Instalar dependencias**
+   ```bash
+    pip install --upgrade pip
+    pip install -r requirements.txt
+    ```
 
 ### Uso
+
 
 ---
 
