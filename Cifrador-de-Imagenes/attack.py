@@ -64,7 +64,6 @@ def atacar_archivo_cifrado(ruta_entrada, ruta_salida):
         print(f"Error durante el ataque: {e}")
         return False
 
-
 def main():
     # Verificar argumentos
     if len(sys.argv) != 3:
