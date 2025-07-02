@@ -1,7 +1,10 @@
 """
-function primitive salsa20
+Primitive Salsa20 cipher implementation.
+This module provides implementation of the Salsa20 stream cipher,
+which is a cryptographic algorithm designed for high performance and security.
 """
 import struct
+
 
 def rotate(v, c):
     """
@@ -9,11 +12,13 @@ def rotate(v, c):
     """
     return ((v << c) & 0xffffffff) | (v >> (32 - c))
 
+
 def add(x, y):
     """
     Suma módulo 2^32
     """
     return (x + y) & 0xffffffff
+
 
 def quarterround(y0, y1, y2, y3):
     """
@@ -24,6 +29,7 @@ def quarterround(y0, y1, y2, y3):
     y3 ^= rotate(add(y2, y1), 13)
     y0 ^= rotate(add(y3, y2), 18)
     return y0, y1, y2, y3
+
 
 def rowround(y):
     """
@@ -36,6 +42,7 @@ def rowround(y):
     z[15], z[12], z[13], z[14] = quarterround(z[15], z[12], z[13], z[14])
     return z
 
+
 def columnround(x):
     """
     Aplica quarterround por columnas
@@ -47,11 +54,13 @@ def columnround(x):
     z[15], z[3], z[7], z[11] = quarterround(z[15], z[3], z[7], z[11])
     return z
 
+
 def doubleround(x):
     """
     Aplica una columnround seguida de una rowround
     """
     return rowround(columnround(x))
+
 
 def little_endian_words(b):
     """
@@ -59,11 +68,13 @@ def little_endian_words(b):
     """
     return list(struct.unpack('<16I', b))
 
+
 def words_to_bytes(words):
     """
     Convierte 16 palabras de 32 bits a 64 bytes (little-endian)
     """
     return struct.pack('<16I', *words)
+
 
 def salsa20_hash(input_):
     """
@@ -73,6 +84,7 @@ def salsa20_hash(input_):
     for _ in range(10):
         x = doubleround(x)
     return [(x[i] + input_[i]) & 0xffffffff for i in range(16)]
+
 
 def create_state(key, nonce, counter):
     """
@@ -86,10 +98,13 @@ def create_state(key, nonce, counter):
     # Formato estándar: c0 k0 c1 n c2 k1 c3
     # c0=0:4, c1=4:8, c2=8:12, c3=12:16
     state_bytes = (
-            constants[0:4] + key[0:16] + constants[4:8] + counter + nonce + constants[8:12] + key[16:32] + constants[12:16]
+            constants[0:4] + key[0:16] + constants[4:8] + counter + nonce +
+            constants[8:12] + key[16:32] + constants[12:16]
     )
-    assert len(state_bytes) == 64, f"El estado debe tener 64 bytes, tiene {len(state_bytes)}"
+    assert len(state_bytes) == 64, \
+        f"El estado debe tener 64 bytes, tiene {len(state_bytes)}"
     return little_endian_words(state_bytes)
+
 
 def salsa20_encrypt(key, nonce, plaintext):
     """
@@ -107,12 +122,14 @@ def salsa20_encrypt(key, nonce, plaintext):
         state = create_state(key, nonce, counter)
         keystream = words_to_bytes(salsa20_hash(state))
 
-        block = plaintext[i*64:(i+1)*64]
+        block = plaintext[i * 64:(i + 1) * 64]
         # Solo usa la parte del keystream necesaria para el bloque
-        encrypted = bytes([b ^ k for b, k in zip(block, keystream[:len(block)])])
+        encrypted = bytes(
+            [b ^ k for b, k in zip(block, keystream[:len(block)])])
         ciphertext.extend(encrypted)
 
     return bytes(ciphertext)
+
 
 def test_salsa20():
     """
@@ -125,5 +142,6 @@ def test_salsa20():
     ciphertext = salsa20_encrypt(key, nonce, plaintext)
     decrypted = salsa20_encrypt(key, nonce, ciphertext)
 
-    assert decrypted == plaintext, "El descifrado no coincide con el texto original"
+    assert decrypted == plaintext, \
+        "El descifrado no coincide con el texto original"
     print("Prueba Salsa20 exitosa: cifrado y descifrado coinciden.")
