@@ -31,7 +31,7 @@ def atacar_archivo_cifrado(ruta_entrada, ruta_salida):
     """
     try:
         # Cargar el archivo cifrado usando utils.py
-        print(f"Cargando archivo cifrado desde: {ruta_entrada}")
+        print(f"[attack] Cargando archivo cifrado desde: {ruta_entrada}")
         datos_cifrados = read_bytes(ruta_entrada)
         
         # Convertir a bytearray para poder modificarlo
@@ -43,31 +43,31 @@ def atacar_archivo_cifrado(ruta_entrada, ruta_salida):
         # la robustez del cifrado frente a ataques de modificación
         bytes_a_modificar = min(5, max(1, int(total_bytes * 0.001)))  # 0.1% o 5 bytes máximo
         
-        print(f"Archivo cifrado: {total_bytes} bytes totales")
-        print(f"Se modificarán {bytes_a_modificar} bytes")
+        print(f"[attack] Archivo cifrado: {total_bytes} bytes totales")
+        print(f"[attack] Se modificarán {bytes_a_modificar} bytes")
         
         # Modificar bytes aleatorios (cambio de un solo bit por byte)
         for _ in range(bytes_a_modificar):
             posicion = random.randint(0, total_bytes - 1)
             posicion_bit = random.randint(0, 7)
             datos_modificados[posicion] ^= (1 << posicion_bit)  # Invertir un bit
-            print(f"Byte modificado en posición {posicion}, bit {posicion_bit}")
+            print(f"[attack] Byte modificado en posición {posicion}, bit {posicion_bit}")
             
         # Guardar el archivo atacado usando utils.py
-        print(f"Guardando archivo atacado en: {ruta_salida}")
+        print(f"[attack] Guardando archivo atacado en: {ruta_salida}")
         write_bytes(ruta_salida, datos_modificados)
             
-        print(f"¡Ataque completado con éxito!")
+        print(f"[attack] ¡Ataque completado con éxito!")
         return True
         
     except Exception as e:
-        print(f"Error durante el ataque: {e}")
+        print(f"[attack] Error durante el ataque: {e}")
         return False
 
-def main():
+def attack():
     # Verificar argumentos
     if len(sys.argv) != 3:
-        print("Uso: python attack.py archivo_cifrado.bin archivo_atacado.bin")
+        print("[attack]  Uso: python attack.py archivo_cifrado.bin archivo_atacado.bin")
         return 1
     
     archivo_entrada = sys.argv[1]
@@ -75,7 +75,7 @@ def main():
     
     # Validar archivo de entrada
     if not os.path.exists(archivo_entrada):
-        print(f"Error: El archivo '{archivo_entrada}' no existe.")
+        print(f"[attack] Error: El archivo '{archivo_entrada}' no existe.")
         return 1
     
     # Realizar el ataque
@@ -83,5 +83,5 @@ def main():
     
     return 0 if exito else 1
 
-if __name__ == "__main__":
-    sys.exit(main())
+if __name__ == "__attack__":
+    sys.exit(attack())

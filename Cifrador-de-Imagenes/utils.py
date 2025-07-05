@@ -1,7 +1,6 @@
 """
 Utils functions for image encryption and decryption.
 """
-import sys
 from pathlib import Path
 from PIL import Image
 
@@ -31,7 +30,7 @@ def write_image(path: str, data: bytes, size: tuple[int, int]) -> None:
     """
     img = Image.frombytes("RGB", size, data)
     img.save(path)
-    print(f"[utils] Imagen guardada en: {path}", file=sys.stderr)
+    print(f"[utils] Imagen guardada en: {path}")
 
 
 def read_bytes(path: str) -> bytes:
@@ -48,7 +47,7 @@ def write_bytes(path: str, data: bytes) -> None:
     """
     with open(path, "wb") as f:
         f.write(data)
-    print(f"[utils] Bytes escritos en: {path}", file=sys.stderr)
+    print(f"[utils] Bytes escritos en: {path}")
 
 
 # Function to test the utility functions
