@@ -6,6 +6,13 @@ from pathlib import Path
 from PIL import Image
 
 
+def get_image_size(img_path):
+    """
+    Obtiene el tamaño (width, height) de una imagen.
+    """
+    with Image.open(img_path) as img:
+        return img.size
+
 def read_image(path: str) -> bytes:
     """
     Lee una imagen (PNG, JPG, etc.) y devuelve sus bytes crudos.
@@ -49,21 +56,21 @@ def test_utils():
     # 1. Leer una imagen y obtener sus bytes
     img_path = "imagenes/imagen_original.png"
     data = read_image(img_path)
-    print(f"[main] Leídos {len(data)} bytes de la imagen '{img_path}'")
+    print(f"[test] Leídos {len(data)} bytes de la imagen '{img_path}'")
 
     # 2. Guardar esos bytes en un archivo binario
     bin_path = "imagenes/test.bin"
     write_bytes(bin_path, data)
-    print(f"[main] Bytes escritos en '{bin_path}'")
+    print(f"[test] Bytes escritos en '{bin_path}'")
 
     # 3. Leer de nuevo los bytes desde el .bin
     bin_data = read_bytes(bin_path)
-    print(f"[main] Leídos {len(bin_data)} bytes de '{bin_path}'")
+    print(f"[test] Leídos {len(bin_data)} bytes de '{bin_path}'")
 
     # 4. Reconstruir la imagen a partir de los bytes leídos
     #    Necesitamos conocer el tamaño (width, height) de la imagen original:
-    with Image.open(img_path) as img:
-        size = img.size  # (width, height)
+    size = get_image_size(img_path)
+
     out_img_path = "imagenes/test.png"
     write_image(out_img_path, bin_data, size)
-    print(f"[main] Imagen reconstruida guardada en '{out_img_path}'")
+    print(f"[test] Imagen reconstruida guardada en '{out_img_path}'")

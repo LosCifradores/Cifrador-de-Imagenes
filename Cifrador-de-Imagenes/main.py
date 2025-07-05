@@ -9,7 +9,6 @@ import sys
 import utils
 import salsa20
 import secrets
-from PIL import Image
 
 
 def main():
@@ -28,8 +27,7 @@ def main():
     imagen_en_bytes = utils.read_image(img_path)
     imagen_cifrada = salsa20.salsa20_encrypt(key, nonce, imagen_en_bytes)
 
-    with Image.open(img_path) as img:
-        size = img.size
+    size = utils.get_image_size(img_path)
 
     utils.write_image(img_cifrada_path, imagen_cifrada, size)
 
