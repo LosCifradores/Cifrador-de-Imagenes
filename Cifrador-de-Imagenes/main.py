@@ -19,11 +19,11 @@ def main():
     print("Hola, Cifrador de Imágenes Salsa20!")
 
     # Definir rutas de las imágenes
-    img_path = "imagenes/imagen_original.png"
-    img_cifrada_path = "imagenes/imagen_cifrada.png"
-    img_descifrada_path = "imagenes/imagen_descifrada.png"
-    img_atacada_path = "imagenes/imagen_atacada.png"
-    img_atacada_descifrada_path = "imagenes/imagen_atacada_descifrada.png"
+    img_path = "imagenes/imagen_original.bmp"
+    img_cifrada_path = "imagenes/imagen_cifrada.bmp"
+    img_descifrada_path = "imagenes/imagen_descifrada.bmp"
+    img_atacada_path = "imagenes/imagen_atacada.bmp"
+    img_atacada_descifrada_path = "imagenes/imagen_atacada_descifrada.bmp"
 
     # Generar clave y nonce aleatorios
     key = secrets.randbits(256)
