@@ -53,7 +53,7 @@ def main():
     # Leer y descifrar la imagen atacada como binario, ya que como producto
     # del ataque, se encuentra corrupta y PIL no puede leerla como imagen.
     try:
-        imagen_atacada_en_bytes = utils.read_bytes(img_atacada_path)
+        imagen_atacada_en_bytes = utils.read_image(img_atacada_path)
         imagen_descifrada_atacada = salsa20.salsa20_encrypt(key, nonce, imagen_atacada_en_bytes)
         utils.write_image(img_atacada_descifrada_path, imagen_descifrada_atacada, size)
     except Exception as e:
