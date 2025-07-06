@@ -1,12 +1,13 @@
 """
 Módulo de ataque para el Sistema de Cifrado de Imágenes
 Este script simula un ataque que altera una imagen cifrada con Salsa20
-para demostrar el principio de confusión en criptografía.
+para demostrar la vulnerabilidad de los cifrados de flujo sin protección
+de integridad.
 
-El principio de confusión establece que la relación entre la clave y el
-texto cifrado debe ser lo más compleja posible. Este módulo demuestra que
-modificaciones mínimas (0.1% del archivo) en el archivo cifrado
-producen cambios catastróficos en la imagen descifrada.
+Salsa20 es un cifrador de flujo que genera un keystream que se combina con
+el texto plano mediante XOR. Esta implementación demuestra cómo un atacante
+puede modificar bits específicos en un archivo cifrado y causar modificaciones
+predecibles en la imagen descifrada, sin conocer la clave.
 
 Uso: python attack.py archivo_cifrado.bin archivo_atacado.bin
 """
@@ -18,12 +19,12 @@ from utils import read_bytes, write_bytes
 
 def atacar_archivo_cifrado(ruta_entrada, ruta_salida):
     """
-    Ataca un archivo cifrado modificando unos pocos bytes.
+    Ataca un archivo cifrado modificando un porcentaje de sus bytes.
     
-    La modificación de solo 0.1% (o 5 bytes máximo) demuestra el
-    principio de confusión en algoritmos criptográficos robustos como Salsa20.
-    Esta prueba muestra el efecto avalancha donde un cambio mínimo en la
-    entrada produce un cambio máximo en la salida.
+    Este ataque aprovecha una característica de los cifradores de flujo como Salsa20:
+    si se modifica un bit en el archivo cifrado, exactamente el mismo bit se modificará
+    en la imagen descifrada. Esto permite a un atacante alterar la imagen final 
+    de manera predecible sin conocer la clave de cifrado.
     
     Parámetros:
         ruta_entrada (str): Ruta al archivo cifrado
@@ -38,22 +39,25 @@ def atacar_archivo_cifrado(ruta_entrada, ruta_salida):
         datos_modificados = bytearray(datos_cifrados)
         total_bytes = len(datos_modificados)
         
-        # Determinar cuántos bytes modificar (0.1% o 5 bytes máximo)
-        # Justificación: Esta pequeña alteración es suficiente para demostrar
-        # la robustez del cifrado frente a ataques de modificación
-        bytes_a_modificar = min(5, max(1, int(total_bytes * 0.001)))  # 0.1% o 5 bytes máximo
+        # Modificar un 50% de los bytes del archivo cifrado
+        # Este alto porcentaje mostrará claramente el efecto en la imagen descifrada
+        porcentaje = 50.0
+        bytes_a_modificar = max(1, int(total_bytes * porcentaje / 100))
         
-        print(f"[attack] Archivo cifrado: {total_bytes} bytes totales")
-        print(f"[attack] Se modificarán {bytes_a_modificar} bytes")
+        # Evitar modificar el encabezado BMP (primeros 54 bytes)
+        # para preservar la estructura del archivo
+        offset_header = 54
         
         # Modificar bytes aleatorios (cambio de un solo bit por byte)
+        modificados = 0
         for _ in range(bytes_a_modificar):
-            posicion = random.randint(0, total_bytes - 1)
+            posicion = random.randint(offset_header, total_bytes - 1)
             posicion_bit = random.randint(0, 7)
             datos_modificados[posicion] ^= (1 << posicion_bit)  # Invertir un bit
-            print(f"[attack] Byte modificado en posición {posicion}, bit {posicion_bit}")
+            modificados += 1
             
         # Guardar el archivo atacado usando utils.py
+        print(f"[attack] Se modificaron {modificados} bytes ({porcentaje}%)")
         print(f"[attack] Guardando archivo atacado en: {ruta_salida}")
         write_bytes(ruta_salida, datos_modificados)
             
@@ -83,5 +87,5 @@ def attack():
     
     return 0 if exito else 1
 
-if __name__ == "__attack__":
+if __name__ == "__main__":
     sys.exit(attack())
