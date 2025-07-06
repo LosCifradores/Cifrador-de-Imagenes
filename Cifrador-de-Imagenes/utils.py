@@ -5,6 +5,32 @@ from pathlib import Path
 from PIL import Image
 
 
+def guardar_clave_nonce(key, nonce, path):
+    """
+    Guarda la clave y el nonce en un archivo binario.
+    :param key:
+    :param nonce:
+    :param path:
+    :return:
+    """
+    with open(path, "wb") as f:
+        f.write(key + nonce)
+    print(f"[OK] Clave y nonce guardados en {path}")
+
+
+def cargar_clave_nonce(path):
+    """
+    Carga la clave y el nonce desde un archivo binario.
+    :param path:
+    :return:
+    """
+    with open(path, "rb") as f:
+        data = f.read()
+        key = data[:32]
+        nonce = data[32:40]
+    return key, nonce
+
+
 def get_image_size(img_path):
     """
     Obtiene el tamaño (width, height) de una imagen.
