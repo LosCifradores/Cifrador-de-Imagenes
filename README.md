@@ -118,6 +118,15 @@ El trabajo será acompañado por una **exposición oral** y opcionalmente por un
 ---
 
 ## 🧪 Simulación de Ataque
+Salsa20 solo asegura la confidencialidad de los datos, pero no la autenticidad ni la integridad. Para mostrar esta vulnerabilidad de los cifradores de flujo como Salsa20, realizamos la siguiente simulación:
+
+1. Ciframos una imagen usando Salsa20.
+2. Modificamos algunos bytes del archivo cifrado de forma aleatoria.
+3. Desciframos el archivo modificado con la clave y nounce originales.
+
+El resultado es que algunos píxeles de la imagen cambiaron de color, pero el resto de la imagen se muestra perfectamente. Esto ocurre porque los mismos bytes que fueron modificados en la imagen cifrada también se ven modificados después del descifrado. Como Salsa20 procesa cada bit de manera independiente, no hay efecto cascada: un cambio en un bit solo afecta ese mismo bit al descifrar.
+
+Para proteger la integridad y autenticidad de los datos, es necesario agregar un mecanismo de verificación, como un MAC, o utilizar cifrados autenticados como ChaCha20-Poly1305.
 
 ---
 
