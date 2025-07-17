@@ -114,6 +114,32 @@ El trabajo será acompañado por una **exposición oral** y opcionalmente por un
 
 ### Uso
 
+Para ejecutar el programa, inicia el archivo `cli.py`. Se mostrará un menú interactivo en consola con las siguientes opciones:
+
+1. **Cifrar y descifrar imagen de prueba:**  
+   Cifra y luego descifra una imagen de ejemplo ubicada en la carpeta `imagenes/`.
+
+2. **Cifrar, atacar y descifrar imagen de prueba:**  
+   Cifra una imagen de ejemplo, simula un ataque modificando el archivo cifrado, y luego intenta descifrar la versión atacada.
+
+3. **Cifrar imagen personalizada:**  
+   Permite seleccionar una imagen, cifrarla y guardar la clave y el nonce generados en un archivo.
+
+4. **Descifrar imagen personalizada:**  
+   Descifra una imagen previamente cifrada utilizando la clave y el nonce guardados.
+
+5. **Generar y guardar clave + nonce:**  
+   Genera una clave y un nonce nuevos y los guarda en un archivo.
+
+6. **Salir:**  
+   Finaliza el programa.
+
+> Para iniciar el menú, ejecuta en la terminal:
+> ```bash
+> python3 Cifrador-de-Imagenes/cli.py
+> ```
+
+Sigue las instrucciones en pantalla para seleccionar la opción deseada e ingresar las rutas de los archivos correspondientes.
 
 ---
 
